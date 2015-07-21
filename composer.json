@@ -1,5 +1,5 @@
 {
-  "name": "impactflow/oauth-client",
+  "name": "impactflow/oauth-client-php",
   "version": "0.1.0",
   "require": {
     "guzzlehttp/guzzle": "6.0.2"
