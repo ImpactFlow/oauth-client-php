@@ -1,0 +1,13 @@
+<phpunit bootstrap="vendor/autoload.php">
+    <testsuites>
+        <testsuite name="ImpactOauthTests">
+            <directory>tests/ImpactOauthClient</directory>
+        </testsuite>
+
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">lib/ImpactOauthClient</directory>
+        </whitelist>
+    </filter>
+</phpunit>
