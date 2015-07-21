@@ -1,5 +1,7 @@
 {
   "name": "impactflow/oauth-client-php",
+  "description": "php library for impactflow oauth service",
+  "type": "library",
   "version": "0.1.0",
   "require": {
     "guzzlehttp/guzzle": "6.0.2"
