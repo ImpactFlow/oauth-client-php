@@ -10,9 +10,6 @@ use Psr\Http\Message\ResponseInterface;
  */
 class Client
 {
-    const TOKEN_ENDPOINT = '/token';
-    const RESOURCE_ENDPOINT = '/resource';
-
     /**
      * @var \GuzzleHttp\Client
      */
@@ -37,7 +34,7 @@ class Client
      */
     public function requestToken(TokenRequest $tokenRequest)
     {
-        $response = $this->guzzleClient->post(self::TOKEN_ENDPOINT, ['json' => $tokenRequest->toArray()]);
+        $response = $this->guzzleClient->post($tokenRequest->getUri(), ['json' => $tokenRequest->toArray()]);
 
         return ($response->getStatusCode() == 200)
             ? $this->populateTokenResponse($response)
@@ -50,7 +47,7 @@ class Client
      */
     public function validateToken(ResourceRequest $resourceRequest)
     {
-        $response = $this->guzzleClient->get(self::RESOURCE_ENDPOINT, ['query' => $resourceRequest->toArray()]);
+        $response = $this->guzzleClient->get($resourceRequest->getUri(), ['query' => $resourceRequest->toArray()]);
 
         return ($response->getStatusCode() == 200)
             ? $this->populateTokenResponse($response)

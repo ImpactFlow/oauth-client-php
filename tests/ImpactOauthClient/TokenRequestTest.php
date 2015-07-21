@@ -32,8 +32,10 @@ class TokenRequestTest extends \PHPUnit_Framework_TestCase
         $request = new TokenRequest();
         $request->setClientId('MyClientId');
         $request->setClientSecret('MySecret');
+        $request->setUri('https://somewhere');
         $this->assertTrue($request->getClientId() == 'MyClientId');
         $this->assertTrue($request->getClientSecret() == 'MySecret');
+        $this->assertTrue($request->getUri() == 'https://somewhere');
     }
 
     /**

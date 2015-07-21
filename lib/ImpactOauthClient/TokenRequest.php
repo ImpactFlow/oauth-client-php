@@ -19,6 +19,11 @@ class TokenRequest
     private $clientSecret = null;
 
     /**
+     * @var string
+     */
+    private $uri = null;
+
+    /**
      * @param string $clientId
      * @param string $clientSecret
      */
@@ -78,5 +83,21 @@ class TokenRequest
             "client_secret" => $this->getClientSecret(),
             "grant_type" => "client_credentials"
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getUri()
+    {
+        return $this->uri;
+    }
+
+    /**
+     * @param string $uri
+     */
+    public function setUri($uri)
+    {
+        $this->uri = $uri;
     }
 }

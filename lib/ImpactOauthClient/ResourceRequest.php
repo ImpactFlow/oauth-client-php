@@ -14,6 +14,11 @@ class ResourceRequest
     private $accessToken;
 
     /**
+     * @var string
+     */
+    private $uri;
+
+    /**
      * @return string
      */
     public function getAccessToken()
@@ -37,5 +42,21 @@ class ResourceRequest
         return [
             'access_token' => $this->getAccessToken()
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getUri()
+    {
+        return $this->uri;
+    }
+
+    /**
+     * @param string $uri
+     */
+    public function setUri($uri)
+    {
+        $this->uri = $uri;
     }
 }
