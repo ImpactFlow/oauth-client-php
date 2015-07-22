@@ -6,7 +6,7 @@ Written to consume Impactflow Internal Oauth Server.
 ### Get Token
 ```
 $tokenRequest = new \ImpactOauthClient\TokenRequest('TestClient', 'TestSecret');
-$tokenRequest->setUri('https://oauth-provider.app/token');
+$tokenRequest->setUri('https://oauth-provider/token');
 $oauthClient = new ImpactOauthClient\Client(new GuzzleHttp\Client(['verify' => false]));
 $token = $oauthClient->requestToken($tokenRequest);
 ```
