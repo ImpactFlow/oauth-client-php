@@ -14,5 +14,6 @@ $token = $oauthClient->requestToken($tokenRequest);
 ```
 $resourceRequest = new \ImpactOauthClient\ResourceRequest();
 $resourceRequest->setAccessToken('MyLongToken');
+$resourceRequest->setUri('https://oauth-provider/resource');
 $token= $oauthClient->validateToken($resoureRequest);
 ```
