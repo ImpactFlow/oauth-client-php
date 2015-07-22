@@ -62,9 +62,17 @@ class Client
     {
         $this->response = new ErrorResponse();
         $json = json_decode((string) $response->getBody(), true);
-        $this->response->setError($json['error']);
-        $this->response->setErrorDescription($json['error_description']);
-        $this->response->setResponseCode($response->getStatusCode());
+        if (!is_array($json)
+            || !array_key_exists('error', $json)
+            || !array_key_exists('error_description', $json)
+        ) {
+            $this->response->setError('Error');
+            $this->response->setErrorDescription($response->getBody());
+        } else {
+            $this->response->setError($json['error']);
+            $this->response->setErrorDescription($json['error_description']);
+            $this->response->setResponseCode($response->getStatusCode());
+        }
         return $this->getResponse();
     }
 
@@ -74,8 +82,17 @@ class Client
      */
     private function populateTokenResponse(ResponseInterface $response)
     {
-        $this->response = new TokenResponse();
         $json = json_decode((string) $response->getBody(), true);
+
+        if (!is_array($json)
+            || !array_key_exists('access_token', $json)
+            || !array_key_exists('client_id', $json)
+            || !array_key_exists('expires', $json)
+        ) {
+            return $this->populateErrorResponse($response);
+        }
+
+        $this->response = new TokenResponse();
         $this->response->setAccessToken($json['access_token']);
         $this->response->setClientId($json['client_id']);
         $this->response->setExpires($json['expires']);

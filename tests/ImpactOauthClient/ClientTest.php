@@ -69,6 +69,40 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function testRequestTokenBadResponse()
+    {
+
+        $guzzleMock = $this->getMockBuilder('\GuzzleHttp\Client')
+            ->setMethods(['post'])
+            ->getMock();
+
+        $httpResponseMock = $this->getMockBuilder('GuzzleHttp\Psr7\Response')
+            ->getMock();
+        $httpResponseMock->method('getStatusCode')
+            ->willReturn(200);
+        $httpResponseMock->method('getBody')
+            ->willReturn('Unknown Error');
+        $guzzleMock->method('post')
+            ->willReturn($httpResponseMock);
+
+        $client = new Client($guzzleMock);
+        $tokenRequest = $this->getMockBuilder('ImpactOauthClient\TokenRequest')
+            ->getMock();
+
+        $requestArr = [];
+        $tokenRequest->expects($this->any())
+            ->method('toArray')
+            ->will($this->returnValue($requestArr));
+        $response = $client->requestToken($tokenRequest);
+        $this->assertInstanceOf('ImpactOauthClient\ErrorResponse', $response);
+        $this->assertTrue($response->getError() == 'Error');
+        $this->assertTrue($response->getErrorDescription() == 'Unknown Error');
+    }
+
+
+    /**
+     * @test
+     */
     public function testValidateToken()
     {
         $guzzleMock = $this->getMockBuilder('\GuzzleHttp\Client')
