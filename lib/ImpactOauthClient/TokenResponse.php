@@ -17,7 +17,7 @@ class TokenResponse
      * Unix Time Stamp
      * @var int
      */
-    private $expires;
+    private $expiresIn;
     /**
      * @var string
      */
@@ -28,7 +28,7 @@ class TokenResponse
      */
     public function isValid()
     {
-        return $this->getAccessToken() && time() < $this->getExpires();
+        return $this->getAccessToken() && time() < $this->getExpiresIn();
     }
 
     /**
@@ -50,17 +50,17 @@ class TokenResponse
     /**
      * @return int
      */
-    public function getExpires()
+    public function getExpiresIn()
     {
-        return $this->expires;
+        return $this->expiresIn;
     }
 
     /**
-     * @param int $expires
+     * @param int $expiresIn
      */
-    public function setExpires($expires)
+    public function setExpiresIn($expiresIn)
     {
-        $this->expires = $expires;
+        $this->expiresIn = $expiresIn;
     }
 
     /**

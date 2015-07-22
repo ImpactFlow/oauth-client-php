@@ -22,49 +22,33 @@ class ErrorResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function testGettersSetters()
     {
-        $response = new TokenResponse();
+        $response = new ErrorResponse();
         $testData = [
             [
-                "access_token" => 'foo',
-                "expires" => 'bar',
-                "client_id" => 400
+                "error" => 'foo',
+                "error_description" => 'bar',
+                "response_code" => 400
             ],
             [
-                "access_token" => '',
-                "expires" => '',
-                "client_id" => null
+                "error" => '',
+                "error_description" => '',
+                "response_code" => null
             ],
             [
-                "access_token" => "\n\tBAD",
-                "expires" => -1,
-                "client_id" => 900000000000
+                "error" => "\n\tBAD",
+                "error_description" => -1,
+                "response_code" => 900000000000
             ]
         ];
 
         foreach ($testData as $key => $data) {
-            $response->setAccessToken($data['access_token']);
-            $response->setExpires($data['expires']);
-            $response->setClientId($data['client_id']);
+            $response->setError($data['error']);
+            $response->setErrorDescription($data['error_description']);
+            $response->setResponseCode($data['response_code']);
 
-            $this->assertTrue($testData[$key]['access_token'] == $response->getAccessToken());
-            $this->assertTrue($testData[$key]['expires'] == $response->getExpires());
-            $this->assertTrue($testData[$key]['client_id'] == $response->getClientId());
+            $this->assertTrue($testData[$key]['error'] == $response->getError());
+            $this->assertTrue($testData[$key]['error_description'] == $response->getErrorDescription());
+            $this->assertTrue($testData[$key]['response_code'] == $response->getResponseCode());
         }
-
-    }
-
-    /**
-     * @test
-     */
-    public function testIsValid()
-    {
-        $response = new TokenResponse();
-        $response->setAccessToken('some token');
-        $now = time();
-        $response->setExpires($now - 100);
-        $this->assertFalse($response->isValid());
-
-        $response->setExpires($now + 100);
-        $this->assertTrue($response->isValid());
     }
 }

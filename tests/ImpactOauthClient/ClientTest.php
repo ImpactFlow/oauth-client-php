@@ -47,7 +47,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $httpResponseMock->method('getStatusCode')
             ->willReturn(200);
         $httpResponseMock->method('getBody')
-            ->willReturn('{"access_token":"foo","client_id":"bar","expires":123}');
+            ->willReturn('{"access_token":"foo","client_id":"bar","expires_in":123}');
         $guzzleMock->method('post')
             ->willReturn($httpResponseMock);
 
@@ -63,7 +63,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('ImpactOauthClient\TokenResponse', $response);
         $this->assertTrue($response->getAccessToken() == 'foo');
         $this->assertTrue($response->getClientId() == 'bar');
-        $this->assertTrue($response->getExpires() == 123);
+        $this->assertTrue($response->getExpiresIn() == 123);
     }
 
     /**
@@ -114,7 +114,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $httpResponseMock->method('getStatusCode')
             ->willReturn(200);
         $httpResponseMock->method('getBody')
-            ->willReturn('{"access_token":"foo","client_id":"bar","expires":123}');
+            ->willReturn('{"access_token":"foo","client_id":"bar","expires_in":123}');
 
         $guzzleMock->method('get')
             ->willReturn($httpResponseMock);
@@ -131,7 +131,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('ImpactOauthClient\TokenResponse', $response);
         $this->assertTrue($response->getAccessToken() == 'foo');
         $this->assertTrue($response->getClientId() == 'bar');
-        $this->assertTrue($response->getExpires() == 123);
+        $this->assertTrue($response->getExpiresIn() == 123);
     }
 
     /**

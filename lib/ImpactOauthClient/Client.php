@@ -87,7 +87,7 @@ class Client
         if (!is_array($json)
             || !array_key_exists('access_token', $json)
             || !array_key_exists('client_id', $json)
-            || !array_key_exists('expires', $json)
+            || !array_key_exists('expires_in', $json)
         ) {
             return $this->populateErrorResponse($response);
         }
@@ -95,7 +95,7 @@ class Client
         $this->response = new TokenResponse();
         $this->response->setAccessToken($json['access_token']);
         $this->response->setClientId($json['client_id']);
-        $this->response->setExpires($json['expires']);
+        $this->response->setExpiresIn($json['expires_in']);
         return $this->getResponse();
     }
 
