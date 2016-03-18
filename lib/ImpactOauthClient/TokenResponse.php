@@ -6,7 +6,11 @@ namespace ImpactOauthClient;
  * Class TokenResponse
  * @package ImpactOauthClient
  */
-class TokenResponse
+/**
+ * Class TokenResponse
+ * @package ImpactOauthClient
+ */
+class TokenResponse implements ResponseInterface
 {
     /**
      * Token
@@ -77,5 +81,13 @@ class TokenResponse
     public function setClientId($clientId)
     {
         $this->clientId = $clientId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getResponseCode()
+    {
+        return 200;
     }
 }

@@ -6,7 +6,7 @@ namespace ImpactOauthClient;
  * Class ErrorResponse
  * @package ImpactOauthClient
  */
-class ErrorResponse
+class ErrorResponse implements ResponseInterface
 {
     /**
      * @var string
