@@ -13,12 +13,11 @@ class Client
     /**
      * @var \GuzzleHttp\Client
      */
-    private $guzzleClient = null;
+    private $guzzleClient;
     /**
-     * @var TokenResponse|ErrorResponse
-     * @todo create Response Interface
+     * @var ResponseInterface
      */
-    private $response = null;
+    private $response;
 
     /**
      * @param \GuzzleHttp\Client $guzzle
@@ -47,8 +46,19 @@ class Client
      */
     public function validateToken(ResourceRequest $resourceRequest)
     {
-        $response = $this->guzzleClient->get($resourceRequest->getUri(), ['query' => $resourceRequest->toArray()]);
-
+        $response = $this->guzzleClient->get(
+            $resourceRequest->getUri(),
+            ['query' => $resourceRequest->toArray()]
+        );
+        if ($resourceRequest->getDeviceToken() && $resourceRequest->getDeviceUri()) {
+            $deviceResponse = $this->guzzleClient->get(
+                $resourceRequest->getDeviceUri(),
+                ['query' => $resourceRequest->toArray()]
+            );
+            if (!$deviceResponse || $deviceResponse->getStatusCode() !== 200) {
+                return $this->populateErrorResponse($deviceResponse);
+            }
+        }
         return ($response->getStatusCode() == 200)
             ? $this->populateTokenResponse($response)
             : $this->populateErrorResponse($response);
@@ -87,7 +97,7 @@ class Client
         if (!is_array($json)
             || !array_key_exists('access_token', $json)
             || !array_key_exists('client_id', $json)
-            || !array_key_exists('expires_in', $json)
+            || !array_key_exists('expires', $json)
         ) {
             return $this->populateErrorResponse($response);
         }
@@ -95,7 +105,10 @@ class Client
         $this->response = new TokenResponse();
         $this->response->setAccessToken($json['access_token']);
         $this->response->setClientId($json['client_id']);
-        $this->response->setExpiresIn($json['expires_in']);
+        $this->response->setExpires($json['expires']);
+        if (isset($json['user_id'])) {
+            $this->response->setUserId($json['user_id']);
+        }
         return $this->getResponse();
     }
 

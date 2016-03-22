@@ -6,10 +6,6 @@ namespace ImpactOauthClient;
  * Class TokenResponse
  * @package ImpactOauthClient
  */
-/**
- * Class TokenResponse
- * @package ImpactOauthClient
- */
 class TokenResponse implements ResponseInterface
 {
     /**
@@ -21,18 +17,23 @@ class TokenResponse implements ResponseInterface
      * Unix Time Stamp
      * @var int
      */
-    private $expiresIn;
+    private $expires;
     /**
      * @var string
      */
     private $clientId;
 
     /**
+     * @var string
+     */
+    private $userId;
+
+    /**
      * @return bool
      */
     public function isValid()
     {
-        return $this->getAccessToken() && time() < $this->getExpiresIn();
+        return $this->getAccessToken() && time() < $this->getExpires();
     }
 
     /**
@@ -54,17 +55,17 @@ class TokenResponse implements ResponseInterface
     /**
      * @return int
      */
-    public function getExpiresIn()
+    public function getExpires()
     {
-        return $this->expiresIn;
+        return $this->expires;
     }
 
     /**
-     * @param int $expiresIn
+     * @param int $expires
      */
-    public function setExpiresIn($expiresIn)
+    public function setExpires($expires)
     {
-        $this->expiresIn = $expiresIn;
+        $this->expires = $expires;
     }
 
     /**
@@ -89,5 +90,21 @@ class TokenResponse implements ResponseInterface
     public function getResponseCode()
     {
         return 200;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
+    /**
+     * @param string $userId
+     */
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
     }
 }
