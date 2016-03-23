@@ -27,28 +27,33 @@ class TokenResponseTest extends \PHPUnit_Framework_TestCase
             [
                 "access_token" => 'foo',
                 "expires_in" => 'bar',
-                "client_id" => 400
+                "client_id" => 400,
+                "user_id" => 123
             ],
             [
                 "access_token" => '',
                 "expires_in" => '',
-                "client_id" => null
+                "client_id" => null,
+                "user_id" => 0,
             ],
             [
                 "access_token" => "\n\tBAD",
                 "expires_in" => -1,
-                "client_id" => 900000000000
+                "client_id" => 900000000000,
+                "user_id" => "BAD",
             ]
         ];
 
         foreach ($testData as $key => $data) {
             $response->setAccessToken($data['access_token']);
-            $response->setExpiresIn($data['expires_in']);
+            $response->setExpires($data['expires_in']);
             $response->setClientId($data['client_id']);
+            $response->setUserId($data['user_id']);
 
             $this->assertTrue($testData[$key]['access_token'] == $response->getAccessToken());
-            $this->assertTrue($testData[$key]['expires_in'] == $response->getExpiresIn());
+            $this->assertTrue($testData[$key]['expires_in'] == $response->getExpires());
             $this->assertTrue($testData[$key]['client_id'] == $response->getClientId());
+            $this->assertTrue($testData[$key]['user_id'] == $response->getUserId());
         }
 
     }
@@ -61,10 +66,19 @@ class TokenResponseTest extends \PHPUnit_Framework_TestCase
         $response = new TokenResponse();
         $response->setAccessToken('some token');
         $now = time();
-        $response->setExpiresIn($now - 100);
+        $response->setExpires($now - 100);
         $this->assertFalse($response->isValid());
 
-        $response->setExpiresIn($now + 100);
+        $response->setExpires($now + 100);
         $this->assertTrue($response->isValid());
+    }
+
+    /**
+     * @test
+     */
+    public function testResponseCode()
+    {
+        $response = new TokenResponse();
+        $this->assertEquals($response->getResponseCode(), 200);
     }
 }

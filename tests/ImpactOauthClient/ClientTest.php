@@ -47,7 +47,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $httpResponseMock->method('getStatusCode')
             ->willReturn(200);
         $httpResponseMock->method('getBody')
-            ->willReturn('{"access_token":"foo","client_id":"bar","expires_in":123}');
+            ->willReturn('{"access_token":"foo","client_id":"bar","expires":123}');
         $guzzleMock->method('post')
             ->willReturn($httpResponseMock);
 
@@ -63,7 +63,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('ImpactOauthClient\TokenResponse', $response);
         $this->assertTrue($response->getAccessToken() == 'foo');
         $this->assertTrue($response->getClientId() == 'bar');
-        $this->assertTrue($response->getExpiresIn() == 123);
+        $this->assertTrue($response->getExpires() == 123);
     }
 
     /**
@@ -114,7 +114,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $httpResponseMock->method('getStatusCode')
             ->willReturn(200);
         $httpResponseMock->method('getBody')
-            ->willReturn('{"access_token":"foo","client_id":"bar","expires_in":123}');
+            ->willReturn('{"access_token":"foo","client_id":"bar","expires":123, "user_id":111}');
 
         $guzzleMock->method('get')
             ->willReturn($httpResponseMock);
@@ -131,8 +131,100 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('ImpactOauthClient\TokenResponse', $response);
         $this->assertTrue($response->getAccessToken() == 'foo');
         $this->assertTrue($response->getClientId() == 'bar');
-        $this->assertTrue($response->getExpiresIn() == 123);
+        $this->assertTrue($response->getExpires() == 123);
     }
+
+    /**
+     * @test
+     */
+    public function testValidateTokenWithDevice()
+    {
+        $guzzleMock = $this->getMockBuilder('\GuzzleHttp\Client')
+            ->setMethods(['get'])
+            ->getMock();
+
+        $httpResponseMock = $this->getMockBuilder('GuzzleHttp\Psr7\Response')
+            ->getMock();
+        $httpResponseMock->method('getStatusCode')
+            ->willReturn(200);
+        $httpResponseMock->method('getBody')
+            ->willReturn('{"access_token":"foo","client_id":"bar","expires":123}');
+
+        $deviceHttpResponseMock = $this->getMockBuilder('GuzzleHttp\Psr7\Response')
+            ->getMock();
+        $deviceHttpResponseMock->method('getStatusCode')
+            ->willReturn(200);
+
+        $guzzleMock->method('get')
+            ->willReturnOnConsecutiveCalls($httpResponseMock, $deviceHttpResponseMock);
+
+        $client = new Client($guzzleMock);
+        $resourceRequest = $this->getMockBuilder('ImpactOauthClient\ResourceRequest')
+            ->getMock();
+
+        $requestArr = [];
+        $resourceRequest->expects($this->any())
+            ->method('toArray')
+            ->will($this->returnValue($requestArr));
+
+        $resourceRequest->expects($this->any())
+            ->method('getDeviceUri')
+            ->will($this->returnValue('something'));
+        $resourceRequest->expects($this->any())
+            ->method('getDeviceToken')
+            ->will($this->returnValue('someToken'));
+
+        $response = $client->validateToken($resourceRequest);
+        $this->assertInstanceOf('ImpactOauthClient\TokenResponse', $response);
+        $this->assertTrue($response->getAccessToken() == 'foo');
+        $this->assertTrue($response->getClientId() == 'bar');
+        $this->assertTrue($response->getExpires() == 123);
+    }
+
+    /**
+     * @test
+     */
+    public function testValidateTokenWithBadDevice()
+    {
+        $guzzleMock = $this->getMockBuilder('\GuzzleHttp\Client')
+            ->setMethods(['get'])
+            ->getMock();
+
+        $httpResponseMock = $this->getMockBuilder('GuzzleHttp\Psr7\Response')
+            ->getMock();
+        $httpResponseMock->method('getStatusCode')
+            ->willReturn(200);
+        $httpResponseMock->method('getBody')
+            ->willReturn('{"access_token":"foo","client_id":"bar","expires":123}');
+
+        $deviceHttpResponseMock = $this->getMockBuilder('GuzzleHttp\Psr7\Response')
+            ->getMock();
+        $deviceHttpResponseMock->method('getStatusCode')
+            ->willReturn(400);
+
+        $guzzleMock->method('get')
+            ->willReturnOnConsecutiveCalls($httpResponseMock, $deviceHttpResponseMock);
+
+        $client = new Client($guzzleMock);
+        $resourceRequest = $this->getMockBuilder('ImpactOauthClient\ResourceRequest')
+            ->getMock();
+
+        $requestArr = [];
+        $resourceRequest->expects($this->any())
+            ->method('toArray')
+            ->will($this->returnValue($requestArr));
+
+        $resourceRequest->expects($this->any())
+            ->method('getDeviceUri')
+            ->will($this->returnValue('something'));
+        $resourceRequest->expects($this->any())
+            ->method('getDeviceToken')
+            ->will($this->returnValue('someToken'));
+
+        $response = $client->validateToken($resourceRequest);
+        $this->assertInstanceOf('ImpactOauthClient\ErrorResponse', $response);
+    }
+
 
     /**
      * @test

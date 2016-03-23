@@ -26,8 +26,12 @@ class ResourceRequestTest extends \PHPUnit_Framework_TestCase
         $request = new ResourceRequest();
         $request->setAccessToken('SomeAccessToken');
         $request->setUri("https://somewhere");
+        $request->setDeviceUri("https://deviceHere");
+        $request->setDeviceToken("123MyDeviceHash");
         $this->assertTrue($request->getAccessToken() == 'SomeAccessToken');
         $this->assertTrue($request->getUri() == "https://somewhere");
+        $this->assertTrue($request->getDeviceToken() == "123MyDeviceHash");
+        $this->assertTrue($request->getDeviceUri() == "https://deviceHere");
     }
 
     /**
