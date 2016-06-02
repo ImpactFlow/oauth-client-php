@@ -28,21 +28,28 @@ class ResourceClient
     /**
      * @var string 
      */
-    private $uri;
+    private $resourceUri;
+
+    /**
+     * @var string
+     */
+    private $deviceUri;
 
     /**
      * ResourceClient constructor.
      * @param Client $guzzle
      * @param string $accessToken
      * @param string $deviceHash
-     * @param string $uri
+     * @param string $resourceUri
+     * @param string $deviceUri
      */
-    public function __construct (Client $guzzle, $accessToken, $deviceHash, $uri)
+    public function __construct (Client $guzzle, $accessToken, $deviceHash, $resourceUri, $deviceUri)
     {
         $this->guzzleClient = $guzzle;
         $this->accessToken = $accessToken;
         $this->deviceHash = $deviceHash;
-        $this->uri = $uri;
+        $this->resourceUri = $resourceUri;
+        $this->deviceUri = $deviceUri;
     }
 
     /**
@@ -53,7 +60,7 @@ class ResourceClient
         $resourceRequest = new ResourceRequest();
         $resourceRequest->setAccessToken($this->accessToken);
         $resourceRequest->setDeviceToken($this->deviceHash);
-        $resourceRequest->setUri($this->uri);
+        $resourceRequest->setUri($this->resourceUri, $this->deviceUri);
 
         $client = new \ImpactOauthClient\Client($this->guzzleClient);
 
