@@ -28,19 +28,22 @@ class TokenResponseTest extends \PHPUnit_Framework_TestCase
                 "access_token" => 'foo',
                 "expires_in" => 'bar',
                 "client_id" => 400,
-                "user_id" => 123
+                "user_id" => 123,
+                "org_id" => 1,
             ],
             [
                 "access_token" => '',
                 "expires_in" => '',
                 "client_id" => null,
                 "user_id" => 0,
+                "org_id" => 0,
             ],
             [
                 "access_token" => "\n\tBAD",
                 "expires_in" => -1,
                 "client_id" => 900000000000,
                 "user_id" => "BAD",
+                "org_id" => "BAD",
             ]
         ];
 
@@ -49,11 +52,13 @@ class TokenResponseTest extends \PHPUnit_Framework_TestCase
             $response->setExpires($data['expires_in']);
             $response->setClientId($data['client_id']);
             $response->setUserId($data['user_id']);
+            $response->setOrgId($data['org_id']);
 
             $this->assertTrue($testData[$key]['access_token'] == $response->getAccessToken());
             $this->assertTrue($testData[$key]['expires_in'] == $response->getExpires());
             $this->assertTrue($testData[$key]['client_id'] == $response->getClientId());
             $this->assertTrue($testData[$key]['user_id'] == $response->getUserId());
+            $this->assertTrue($testData[$key]['org_id'] == $response->getOrgId());
         }
 
     }

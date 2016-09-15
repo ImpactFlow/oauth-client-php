@@ -6,6 +6,10 @@ namespace ImpactOauthClient;
  * Class TokenResponse
  * @package ImpactOauthClient
  */
+/**
+ * Class TokenResponse
+ * @package ImpactOauthClient
+ */
 class TokenResponse implements ResponseInterface
 {
     /**
@@ -27,6 +31,11 @@ class TokenResponse implements ResponseInterface
      * @var string
      */
     private $userId;
+
+    /**
+     * @var string
+     */
+    private $orgId;
 
     /**
      * @return bool
@@ -106,5 +115,21 @@ class TokenResponse implements ResponseInterface
     public function setUserId($userId)
     {
         $this->userId = $userId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrgId()
+    {
+        return $this->orgId;
+    }
+
+    /**
+     * @param $orgId
+     */
+    public function setOrgId($orgId)
+    {
+        $this->orgId = $orgId;
     }
 }

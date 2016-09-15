@@ -22,7 +22,7 @@ class Client
     /**
      * @param \GuzzleHttp\Client $guzzle
      */
-    public function __construct (\GuzzleHttp\Client $guzzle)
+    public function __construct(\GuzzleHttp\Client $guzzle)
     {
         $this->guzzleClient = $guzzle;
     }
@@ -108,6 +108,9 @@ class Client
         $this->response->setExpires($json['expires']);
         if (isset($json['user_id'])) {
             $this->response->setUserId($json['user_id']);
+        }
+        if (isset($json['org_id'])) {
+            $this->response->setOrgId($json['org_id']);
         }
         return $this->getResponse();
     }

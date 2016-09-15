@@ -41,7 +41,7 @@ class ResourceClient
      * @param string $resourceUri
      * @param string $deviceUri
      */
-    public function __construct (Client $guzzle, $resourceUri, $deviceUri)
+    public function __construct(Client $guzzle, $resourceUri, $deviceUri)
     {
         $this->guzzleClient = $guzzle;
         $this->resourceUri = $resourceUri;
