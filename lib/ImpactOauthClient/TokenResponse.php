@@ -6,10 +6,6 @@ namespace ImpactOauthClient;
  * Class TokenResponse
  * @package ImpactOauthClient
  */
-/**
- * Class TokenResponse
- * @package ImpactOauthClient
- */
 class TokenResponse implements ResponseInterface
 {
     /**
@@ -36,6 +32,16 @@ class TokenResponse implements ResponseInterface
      * @var string
      */
     private $orgId;
+
+    /**
+     * @var bool
+     */
+    private $useDeviceHash;
+
+    /**
+     * @var string
+     */
+    private $orgContext;
 
     /**
      * @return bool
@@ -131,5 +137,37 @@ class TokenResponse implements ResponseInterface
     public function setOrgId($orgId)
     {
         $this->orgId = $orgId;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getUseDeviceHash()
+    {
+        return $this->useDeviceHash;
+    }
+
+    /**
+     * @param bool $useDeviceHash
+     */
+    public function setUseDeviceHash($useDeviceHash)
+    {
+        $this->useDeviceHash = $useDeviceHash;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrgContext()
+    {
+        return $this->orgContext;
+    }
+
+    /**
+     * @param string $orgContext
+     */
+    public function setOrgContext($orgContext)
+    {
+        $this->orgContext = $orgContext;
     }
 }
