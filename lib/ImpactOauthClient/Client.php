@@ -112,6 +112,9 @@ class Client
         if (isset($json['org_id'])) {
             $this->response->setOrgId($json['org_id']);
         }
+        if (isset($json['org_context'])) {
+            $this->response->setOrgContext($json['org_context']);
+        }
         return $this->getResponse();
     }
 
