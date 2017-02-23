@@ -44,6 +44,11 @@ class TokenResponse implements ResponseInterface
     private $orgContext;
 
     /**
+     * @var string
+     */
+    private $scope;
+
+    /**
      * @return bool
      */
     public function isValid()
@@ -169,5 +174,21 @@ class TokenResponse implements ResponseInterface
     public function setOrgContext($orgContext)
     {
         $this->orgContext = $orgContext;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScope()
+    {
+        return $this->scope;
+    }
+
+    /**
+     * @param string $scope
+     */
+    public function setScope($scope)
+    {
+        $this->scope = $scope;
     }
 }

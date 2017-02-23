@@ -115,6 +115,9 @@ class Client
         if (isset($json['org_context'])) {
             $this->response->setOrgContext($json['org_context']);
         }
+        if (isset($json['scope'])) {
+            $this->response->setScope($json['scope']);
+        }
         return $this->getResponse();
     }
 
